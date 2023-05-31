@@ -6,7 +6,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: novela
+  ECR_REPOSITORY: kharacter
   IMAGE_NAME: prod
 
 jobs:
