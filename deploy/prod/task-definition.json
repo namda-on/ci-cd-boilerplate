@@ -1,0 +1,48 @@
+{
+  "family": "demo-helloworld2",
+  "containerDefinitions": [
+    {
+      "name": "helloworld-api",
+      "image": "336448444370.dkr.ecr.ap-northeast-2.amazonaws.com/kharacter:prod",
+      "cpu": 256,
+      "portMappings": [
+        {
+          "name": "helloworld-api-4000-test",
+          "containerPort": 4000,
+          "hostPort": 4000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/demo-helloworld2",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:4000 || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 5
+      }
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::336448444370:role/test-ecs-role",
+  "executionRoleArn": "arn:aws:iam::336448444370:role/test-ecs-execution-role",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
