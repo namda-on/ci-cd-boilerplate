@@ -8,7 +8,7 @@ export class AppController {
   @Get('/healthcheck')
   getHealthCheck(): string {
     console.log('healthcheck');
-    return 'hello world';
+    return 'hello world healthcheck~';
   }
 
   @Get()

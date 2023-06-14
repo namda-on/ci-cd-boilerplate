@@ -12,5 +12,5 @@ COPY . .
 
 RUN yarn build
 
-EXPOSE 4000
+EXPOSE 80
 CMD [ "node", "./dist/main.js" ]
