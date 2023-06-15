@@ -30,38 +30,6 @@
   "taskRoleArn": "arn:aws:iam::336448444370:role/test-ecs-role",
   "executionRoleArn": "arn:aws:iam::336448444370:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
-  "revision": 1,
-  "volumes": [],
-  "requiresAttributes": [
-    {
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "name": "ecs.capability.execution-role-awslogs"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "name": "ecs.capability.execution-role-ecr-pull"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "name": "ecs.capability.task-eni"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
-    }
-  ],
-  "compatibilities": ["EC2", "FARGATE"],
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
