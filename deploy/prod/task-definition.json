@@ -1,46 +1,70 @@
 {
-  "family": "demo-helloworld2",
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:336448444370:task-definition/clonz-server-demo-task-definition:1",
   "containerDefinitions": [
     {
-      "name": "helloworld-api",
+      "name": "clonz-server-demo",
       "image": "336448444370.dkr.ecr.ap-northeast-2.amazonaws.com/kharacter:prod",
-      "cpu": 256,
+      "cpu": 512,
       "portMappings": [
         {
-          "name": "helloworld-api-4000-test",
-          "containerPort": 4000,
-          "hostPort": 4000,
+          "name": "clonz-server-demo-80-tcp",
+          "containerPort": 80,
+          "hostPort": 80,
           "protocol": "tcp",
           "appProtocol": "http"
         }
       ],
       "essential": true,
-      "environment": [],
-      "mountPoints": [],
-      "volumesFrom": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/demo-helloworld2",
+          "awslogs-group": "/ecs/clonz-server-demo-task-definition",
           "awslogs-region": "ap-northeast-2",
           "awslogs-stream-prefix": "ecs"
         }
-      },
-      "healthCheck": {
-        "command": ["CMD-SHELL", "curl -f http://localhost:4000 || exit 1"],
-        "interval": 30,
-        "timeout": 5,
-        "retries": 5
       }
     }
   ],
+  "family": "clonz-server-demo-task-definition",
   "taskRoleArn": "arn:aws:iam::336448444370:role/test-ecs-role",
-  "executionRoleArn": "arn:aws:iam::336448444370:role/test-ecs-execution-role",
+  "executionRoleArn": "arn:aws:iam::336448444370:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "compatibilities": ["EC2", "FARGATE"],
   "requiresCompatibilities": ["FARGATE"],
-  "cpu": "256",
-  "memory": "512",
+  "cpu": "512",
+  "memory": "1024",
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"

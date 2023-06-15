@@ -15,14 +15,14 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: kharacter
-  ECS_SERVICE: demo-api
-  ECS_CLUSTER: khararcter
+  ECS_SERVICE: clonz-demo-svc
+  ECS_CLUSTER: clonz-demo-cluster
   # set this to the path to your Amazon ECS task definition
   # file, e.g. .aws/task-definition.json
   ECS_TASK_DEFINITION: deploy/prod/task-definition.json
   # set this to the name of the container in the
   # containerDefinitions section of your task definition
-  CONTAINER_NAME: helloworld-api
+  CONTAINER_NAME: clonz-server-demo
 
 permissions:
   contents: read
