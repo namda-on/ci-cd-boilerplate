@@ -1,0 +1,11 @@
+name: example-workflow
+on: [push]
+
+jobs:
+  check-target-branch_develop:
+    environment: develop
+    if: github.ref_name == ${{ vars.TARGET_BRANCH }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: TEST
+        run: echo "hello"
