@@ -1,4 +1,4 @@
-name: '[PROD] Docker Image CI'
+name: '[BUILD] Docker Image CI'
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: kharacter
-  IMAGE_NAME: prod
+  IMAGE_NAME: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
 
 jobs:
   build:
