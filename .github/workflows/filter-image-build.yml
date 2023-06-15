@@ -18,8 +18,14 @@ jobs:
         environment: [production, develop]
     env:
       CURRENT_BRANCH: ${{ github.ref_name }}
-      TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
     steps:
+      - name: set TARGET_BRANCH based on ${{ matrix.environment }}
+        run: |
+          if [ "${{ matrix.environment }}" == "production" ]; then
+            echo "TARGET_BRANCH=main" >> $GITHUB_ENV
+          elif [ "${{ matrix.environment }}" == "develop" ]; then
+            echo "TARGET_BRANCH=develop" >> $GITHUB_ENV
+          fi
       - name: check ${{ matrix.environment }}
         run: |
           if [ "$CURRENT_BRANCH" == "$TARGET_BRANCH" ]; then
