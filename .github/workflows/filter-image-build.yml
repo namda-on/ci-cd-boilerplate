@@ -11,26 +11,16 @@ jobs:
         run: |
           echo $CUR_GITHUB_REF
 
-  check-target-branch-develop:
-    if: github.ref_name == vars.TARGET_BRANCH
-    environment: develop
+  check-target-branch:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [production, develop]
     env:
+      CURRENT_BRANCH: ${{ github.ref_name }}
       TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
     steps:
-      - name: TEST
+      - name: check ${{ matrix.environment }}
         run: |
-          echo "dev"
-          echo $TARGET_BRANCH
-
-  check-target-branch-prod:
-    if: github.ref_name == vars.TARGET_BRANCH
-    environment: production
-    runs-on: ubuntu-latest
-    env:
-      TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
-    steps:
-      - name: TEST
-        run: |
-          echo "prod"
-          echo $TARGET_BRANCH
+          if[$CURRENT_BRANCH == $TARGET_BRANCH];then
+            echo "$CURRENT_BRANCH $TARGET_BRANCH trigger build"
