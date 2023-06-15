@@ -1,11 +1,26 @@
-name: example-workflow
+name: '[build] trigger docker image build'
 on: [push]
 
 jobs:
-  check-target-branch_develop:
+  check-target-branch-develop:
     environment: develop
     if: github.ref_name == ${{ vars.TARGET_BRANCH }}
     runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
     steps:
       - name: TEST
-        run: echo "hello"
+        run: |
+          echo "dev"
+          echo $TARGET_BRANCH
+  check-target-branch-prod:
+    environment: production
+    if: github.ref_name == ${{ vars.TARGET_BRANCH }}
+    runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
+    steps:
+      - name: TEST
+        run: |
+          echo "prod"
+          echo $TARGET_BRANCH
