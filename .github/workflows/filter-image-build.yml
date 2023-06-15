@@ -2,9 +2,18 @@ name: '[build] trigger docker image build'
 on: [push]
 
 jobs:
+  check-variable:
+    runs-on: ubuntu-latest
+    env:
+      CUR_GITHUB_REF: ${{github.ref_name}}
+    steps:
+      - name: show-variable
+        run: |
+          echo $CUR_GITHUB_REF
+
   check-target-branch-develop:
+    if: github.ref_name == vars.TARGET_BRANCH
     environment: develop
-    if: github.ref_name == ${{ vars.TARGET_BRANCH }}
     runs-on: ubuntu-latest
     env:
       TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
@@ -13,9 +22,10 @@ jobs:
         run: |
           echo "dev"
           echo $TARGET_BRANCH
+
   check-target-branch-prod:
+    if: github.ref_name == vars.TARGET_BRANCH
     environment: production
-    if: github.ref_name == ${{ vars.TARGET_BRANCH }}
     runs-on: ubuntu-latest
     env:
       TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
