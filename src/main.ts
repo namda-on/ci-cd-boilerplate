@@ -6,6 +6,7 @@ dotenv.config();
 
 async function bootstrap() {
   console.log(process.env.MESSAGE);
+  console.log(process.env.PHASE);
   const app = await NestFactory.create(AppModule);
   await app.listen(80);
 }
