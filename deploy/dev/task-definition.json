@@ -1,5 +1,5 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:336448444370:task-definition/clonz-server-demo-task-definition:1",
+  "family": "clonz-server-dev-task-definition",
   "containerDefinitions": [
     {
       "name": "clonz-server-demo",
@@ -19,14 +19,13 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/clonz-server-demo-task-definition",
+          "awslogs-group": "/ecs/clonz-server-dev-task-definition",
           "awslogs-region": "ap-northeast-2",
           "awslogs-stream-prefix": "ecs"
         }
       }
     }
   ],
-  "family": "clonz-server-demo-task-definition",
   "taskRoleArn": "arn:aws:iam::336448444370:role/test-ecs-role",
   "executionRoleArn": "arn:aws:iam::336448444370:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
