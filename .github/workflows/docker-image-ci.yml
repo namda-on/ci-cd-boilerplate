@@ -6,16 +6,16 @@ on:
       phase:
         description: 'Build Phase'
         required: true
-        default: 'develop'
+        default: 'dev'
         type: choice
         options:
-          - develop
-          - production
+          - dev
+          - prod
 
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: kharacter
-  IMAGE_NAME: ${{ inputs.phase == 'production' && 'prod' || 'dev' }}
+  IMAGE_NAME: ${{ inputs.phase }}
 
 jobs:
   build-and-push:

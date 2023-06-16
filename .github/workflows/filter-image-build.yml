@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: [production, develop]
+        environment: [prod, dev]
     env:
       PHASE: ${{ matrix.environment }}
       CURRENT_BRANCH: ${{ github.ref_name }}
@@ -31,12 +31,8 @@ jobs:
           ssh-key: '${{ secrets.COMMIT_KEY }}'
 
       - name: set TARGET_BRANCH based on ${{ env.PHASE }}
-        run: |
-          if [ "${{ env.PHASE }}" == "production" ]; then
-            echo "TARGET_BRANCH=main" >> $GITHUB_ENV
-          elif [ "${{ env.PHASE }}" == "develop" ]; then
-            echo "TARGET_BRANCH=develop" >> $GITHUB_ENV
-          fi
+        run: echo "TARGET_BRANCH=${{ vars.TARGET_BRANCH }}" >> $GITHUB_ENV
+
       - name: trigger docker build ${{ env.PHASE }}
         run: |
           if [ "$CURRENT_BRANCH" == "$TARGET_BRANCH" ]; then
