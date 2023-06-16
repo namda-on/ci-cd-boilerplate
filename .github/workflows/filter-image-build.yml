@@ -1,4 +1,4 @@
-name: '[BUILD] trigger docker image build'
+name: '[BUILD] Trigger docker image build'
 on: [push]
 
 env:
