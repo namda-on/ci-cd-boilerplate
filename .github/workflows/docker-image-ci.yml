@@ -15,13 +15,18 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: kharacter
-  IMAGE_NAME: ${{ inputs.phase == 'proudction' && 'prod' || 'dev' }}
+  IMAGE_NAME: ${{ inputs.phase == 'production' && 'prod' || 'dev' }}
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
-
+    env:
+      PHASE: ${{ inputs.phase }}
     steps:
+      - name: Check input Value
+        run: |
+          echo "$PHASE"
+
       - name: Checkout
         uses: actions/checkout@v3
 
