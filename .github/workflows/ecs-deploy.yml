@@ -1,4 +1,4 @@
-name: '[PROD] Deploy to Amazon ECS'
+name: '[DEPLOY] Deploy to Amazon ECS'
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ env:
   ECS_CLUSTER: clonz-demo-cluster
   # set this to the path to your Amazon ECS task definition
   # file, e.g. .aws/task-definition.json
-  ECS_TASK_DEFINITION: deploy/prod/task-definition.json
+  ECS_TASK_DEFINITION: 'deploy/${{ inputs.phase }}/task-definition.json'
   # set this to the name of the container in the
   # containerDefinitions section of your task definition
   CONTAINER_NAME: clonz-server-demo

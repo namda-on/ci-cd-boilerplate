@@ -1,0 +1,40 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:336448444370:task-definition/clonz-server-demo-task-definition:1",
+  "containerDefinitions": [
+    {
+      "name": "clonz-server-demo",
+      "image": "336448444370.dkr.ecr.ap-northeast-2.amazonaws.com/kharacter:dev",
+      "cpu": 512,
+      "portMappings": [
+        {
+          "name": "clonz-server-demo-80-tcp",
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/clonz-server-demo-task-definition",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "family": "clonz-server-demo-task-definition",
+  "taskRoleArn": "arn:aws:iam::336448444370:role/test-ecs-role",
+  "executionRoleArn": "arn:aws:iam::336448444370:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
