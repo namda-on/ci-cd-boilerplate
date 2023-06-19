@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: The template used to create an ECS Service from the ECS Console.
+Parameters:
+  ECSClusterName:
+    Type: String
+    Default: clonz-demo-cluster
+  SecurityGroupIDs:
+    Type: CommaDelimitedList
+    Default: sg-007c0cab8a28ac3ab
+  SubnetIDs:
+    Type: CommaDelimitedList
+    Default: subnet-0225aa814add79782,subnet-04e545616ff55b3ac
+  VpcID:
+    Type: String
+    Default: vpc-01408e2fec67cba5b
+  LoadBalancerName:
+    Type: String
+    Default: alb-clonz-dev-2
+Resources:
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: clonz-demo-cluster
+      TaskDefinition: arn:aws:ecs:ap-northeast-2:336448444370:task-definition/clonz-server-dev-task-definition:1
+      LaunchType: FARGATE
+      ServiceName: clonz-server-dev-svc
+      SchedulingStrategy: REPLICA
+      DesiredCount: 1
+      LoadBalancers:
+        - ContainerName: clonz-server-demo
+          ContainerPort: 80
+          LoadBalancerName: !Ref AWS::NoValue
+          TargetGroupArn: arn:aws:elasticloadbalancing:ap-northeast-2:336448444370:targetgroup/clonz-server-dev-tg/1034f0c758f4abd9
+      HealthCheckGracePeriodSeconds: 15
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups: !Ref SecurityGroupIDs
+          Subnets: !Ref SubnetIDs
+      PlatformVersion: LATEST
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+      DeploymentController:
+        Type: ECS
+      ServiceConnectConfiguration:
+        Enabled: false
+      Tags: []
+      EnableECSManagedTags: true
+Outputs:
+  ClusterName:
+    Description: The cluster used to create the service.
+    Value: !Ref ECSClusterName
+  ECSService:
+    Description: The created service.
+    Value: !Ref ECSService
