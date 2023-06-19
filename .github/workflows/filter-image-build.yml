@@ -4,7 +4,7 @@ on: [push]
 env:
   REPO_OWNER: dev-novela
   REPO: ci-cd-test
-  TARGET_WORK_FLOW_FILE: 'docker-image-ci.yml'
+  TARGET_WORK_FLOW_FILE: docker-image-ci.yml
   GITHUB_SECRET: ${{ secrets.WORKFLOW_PAT }}
 
 jobs:
@@ -24,10 +24,6 @@ jobs:
         environment: [prod, dev]
     environment: ${{ matrix.environment }}
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ssh-key: '${{ secrets.COMMIT_KEY }}'
-
       - name: trigger docker build ${{ matrix.environment }}
         run: |
           if [ "${{ github.ref_name }}" == "${{ vars.TARGET_BRANCH }}" ]; then
