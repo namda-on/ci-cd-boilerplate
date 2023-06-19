@@ -12,8 +12,9 @@ on:
           - dev
           - prod
       target_image:
-        description: 'Check previous image and '
+        description: 'target_image commit'
         required: false
+        default: null
         type: string
 
 concurrency:
@@ -23,7 +24,7 @@ concurrency:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: kharacter
-  IMAGE_NAME: ${{ inputs.phase }}
+  IMAGE_PHASE_TAG: ${{ inputs.phase }}
   TARGET_WORK_FLOW_FILE: ecs-deploy.yml
 
 jobs:
@@ -54,25 +55,26 @@ jobs:
       - name: Get Short SHA
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
-      - name: Build, tag image
-        id: build-image
+      - name: Build, Tag, Push Image
+        if: inputs.target_image == null
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ env.SHORT_SHA }}
+          IMAGE_COMMIT_TAG: ${{ env.SHORT_SHA }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_COMMIT_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_COMMIT_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_PHASE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_COMMIT_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_PHASE_TAG
 
-      - name: push image to Amazon ECR
-        id: push-image
+      - name: Pull, Tag, Push Image
+        if: inputs.target_image != null
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ env.SHORT_SHA }}
+          IMAGE_COMMIT_TAG: ${{ inputs.target_image }}
         run: |
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME
-
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_COMMIT_TAG 
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_COMMIT_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_PHASE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_PHASE_TAG
 
   trigger-dev-deploy:
     if: inputs.phase == 'dev'
