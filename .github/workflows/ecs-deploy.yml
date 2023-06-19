@@ -12,6 +12,10 @@ on:
           - dev
           - prod
 
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.phase }}
+  cancel-in-progress: true
+
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: kharacter
