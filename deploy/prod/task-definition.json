@@ -5,6 +5,7 @@
       "name": "clonz-server-demo",
       "image": "336448444370.dkr.ecr.ap-northeast-2.amazonaws.com/kharacter:prod",
       "cpu": 256,
+      "stopTimeout": 2,
       "portMappings": [
         {
           "name": "clonz-server-demo-80-tcp",
