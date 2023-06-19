@@ -11,6 +11,10 @@ on:
         options:
           - dev
           - prod
+      target_image:
+        description: 'Check previous image and '
+        required: false
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.inputs.phase }}
@@ -26,13 +30,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     environment: ${{ inputs.phase }}
-    env:
-      PHASE: ${{ inputs.phase }}
     steps:
-      - name: Check input Value
-        run: |
-          echo "$PHASE"
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -56,7 +54,7 @@ jobs:
       - name: Get Short SHA
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag image
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -65,10 +63,17 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME
 
+      - name: push image to Amazon ECR
+        id: push-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ env.SHORT_SHA }}
+        run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME
 
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
   trigger-dev-deploy:
     if: inputs.phase == 'dev'
     needs: build-and-push
