@@ -7,13 +7,11 @@ export class AppController {
 
   @Get('/healthcheck')
   getHealthCheck(): string {
-    console.log('healthcheck');
     return 'hello world healthcheck~';
   }
 
   @Get()
   getHello(): string {
-    console.log('hello');
     return this.appService.getHello();
   }
 }
