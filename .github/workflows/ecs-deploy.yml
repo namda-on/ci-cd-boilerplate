@@ -18,7 +18,7 @@ concurrency:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: kharacter
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
   ECS_TASK_DEFINITION: 'deploy/${{ inputs.phase }}/task-definition.json'
   CONTAINER_NAME: clonz-server-demo
 
